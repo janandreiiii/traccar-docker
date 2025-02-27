@@ -1,6 +1,6 @@
 FROM debian:12-slim
 
-ENV TRACCAR_VERSION=5.10
+ENV TRACCAR_VERSION=6.6
 
 WORKDIR /opt/traccar
 
@@ -10,12 +10,12 @@ RUN set -ex; \
       openjdk-17-jre-headless \
       unzip \
       wget; \
-    wget -q https://github.com/traccar/traccar/releases/download/v6.6/traccar-linux-64-6.6.zip \
-    && unzip traccar-linux-64.zip \
-    && rm traccar-linux-64.zip; \
+    wget -q https://github.com/traccar/traccar/releases/download/v$TRACCAR_VERSION/traccar-linux-64-$TRACCAR_VERSION.zip \
+    && unzip traccar-linux-64-$TRACCAR_VERSION.zip \
+    && rm traccar-linux-64-$TRACCAR_VERSION.zip; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8082 5000-5150/udp
 
-ENTRYPOINT ["./traccar.run"]
+ENTRYPOINT ["./traccar", "start"]
