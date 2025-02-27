@@ -1,18 +1,21 @@
-FROM debian:bullseye-slim
+FROM debian:12-slim
 
-# Install Java (required for Traccar)
-RUN apt update && apt install -y openjdk-17-jre wget unzip
+ENV TRACCAR_VERSION=6.6
 
-# Set working directory
 WORKDIR /opt/traccar
 
-# Download and extract Traccar
-RUN wget -q https://github.com/traccar/traccar/releases/latest/download/traccar-linux-arm-64.zip \
-    && unzip traccar-linux-arm-64.zip \
-    && rm traccar-linux-arm-64.zip
+RUN set -ex; \
+    apt-get update; \
+    TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+      openjdk-17-jre-headless \
+      unzip \
+      wget; \
+    wget -qO /tmp/traccar.zip https://github.com/traccar/traccar/releases/download/v$TRACCAR_VERSION/traccar-other-$TRACCAR_VERSION.zip; \
+    unzip -qo /tmp/traccar.zip -d /opt/traccar; \
+    apt-get autoremove --yes unzip wget; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/* /tmp/*
 
-# Expose Traccar's default Web UI port
-EXPOSE 8082
+ENTRYPOINT ["java", "-Xms1g", "-Xmx1g", "-Djava.net.preferIPv4Stack=true"]
 
-# Start Traccar with limited memory usage
 CMD ["java", "-Xmx256m", "-jar", "tracker-server.jar"]
