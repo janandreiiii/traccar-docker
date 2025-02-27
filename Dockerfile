@@ -10,7 +10,7 @@ RUN set -ex; \
       openjdk-17-jre-headless \
       unzip \
       wget; \
-    wget -q https://github.com/traccar/traccar/releases/download/v$TRACCAR_VERSION/traccar-linux-64.zip \
+    wget -q https://github.com/traccar/traccar/releases/download/v5.10/traccar-linux-64.zip \
     && unzip traccar-linux-64.zip \
     && rm traccar-linux-64.zip; \
     apt-get clean; \
