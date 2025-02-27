@@ -20,8 +20,9 @@ RUN set -ex; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
+# Copy default config file
+COPY traccar.xml /opt/traccar/conf/traccar.xml
+
 EXPOSE 8082 5000-5150/udp
 
-WORKDIR /opt/traccar
-
-ENTRYPOINT ["java", "-jar", "tracker-server.jar"]
+ENTRYPOINT ["java", "-jar", "tracker-server.jar", "conf/traccar.xml"]
