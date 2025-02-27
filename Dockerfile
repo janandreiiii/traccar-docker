@@ -18,4 +18,4 @@ RUN set -ex; \
 
 EXPOSE 8082 5000-5150/udp
 
-ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "tracker-server.jar"]
+ENTRYPOINT ["./traccar.run"]
