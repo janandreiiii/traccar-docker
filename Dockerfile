@@ -1,6 +1,6 @@
 FROM debian:12-slim
 
-ENV TRACCAR_VERSION=6.6
+ENV TRACCAR_VERSION=5.10
 
 WORKDIR /opt/traccar
 
@@ -10,12 +10,12 @@ RUN set -ex; \
       openjdk-17-jre-headless \
       unzip \
       wget; \
-    wget -qO /tmp/traccar.zip https://github.com/traccar/traccar/releases/download/v$TRACCAR_VERSION/traccar-other-$TRACCAR_VERSION.zip; \
-    unzip -qo /tmp/traccar.zip -d /opt/traccar; \
-    apt-get autoremove --yes unzip wget; \
+    wget -q https://github.com/traccar/traccar/releases/download/v$TRACCAR_VERSION/traccar-linux-64.zip \
+    && unzip traccar-linux-64.zip \
+    && rm traccar-linux-64.zip; \
     apt-get clean; \
-    rm -rf /var/lib/apt/lists/* /tmp/*
+    rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["java", "-Xms1g", "-Xmx1g", "-Djava.net.preferIPv4Stack=true"]
+EXPOSE 8082 5000-5150/udp
 
-CMD ["java", "-Xmx256m", "-jar", "tracker-server.jar"]
+ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "tracker-server.jar"]
