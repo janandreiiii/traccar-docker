@@ -20,9 +20,14 @@ RUN set -ex; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
+# Ensure conf directory exists
+RUN mkdir -p /opt/traccar/conf
+
 # Copy default config file
 COPY traccar.xml /opt/traccar/conf/traccar.xml
 
+# Expose ports for web UI and device connections
 EXPOSE 8082 5000-5150/udp
 
-ENTRYPOINT ["java", "-jar", "tracker-server.jar", "conf/traccar.xml"]
+# Start Traccar with correct config file
+CMD ["java", "-jar", "/opt/traccar/tracker-server.jar", "/opt/traccar/conf/traccar.xml"]
