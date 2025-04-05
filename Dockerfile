@@ -31,8 +31,8 @@ COPY traccar.xml /opt/traccar/conf/traccar.xml
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose ports
+# Expose ports for web UI and device connections
 EXPOSE 8082 5055
 
 # Start both Traccar and Nginx
-CMD service nginx start && exec java -jar /opt/traccar/tracker-server.jar /opt/traccar/conf/traccar.xml
+CMD service nginx start && java -jar /opt/traccar/tracker-server.jar /opt/traccar/conf/traccar.xml
